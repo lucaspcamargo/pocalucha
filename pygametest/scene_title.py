@@ -56,5 +56,3 @@ class SceneTitle(scene_base.Scene):
         sw, sh = surface.get_size()
         iw, ih = self.main_image.get_size()
         surface.blit(self.main_image, ((sw - iw) // 2, (sh - ih) // 2 - 180 + math.sin(self.time) * 20))
-        title_prov = self.manager.dbg_font.render("POCA LUCHA ------- Press enter to start", None, pygame.Color("green"), pygame.Color("black"))
-        surface.blit(title_prov, (40, 40))
