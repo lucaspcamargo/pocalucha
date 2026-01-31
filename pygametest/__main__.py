@@ -2,6 +2,7 @@
 
 import sys
 import pygame
+import os
 
 from pygametest.scene_title import SceneTitle
 
@@ -111,4 +112,6 @@ def main():
     sys.exit(0)
 
 if __name__ == "__main__":
+    os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
+    os.environ["PYGAME_BLEND_ALPHA_SDL2"] = "1"
     main()

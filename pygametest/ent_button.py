@@ -59,6 +59,7 @@ class Button(Entity):
         """
         Handle pygame events. Returns True if the event was consumed.
         """
+        
         if not self.visible or not self.enabled:
             # still track hover for visual consistency on motion if visible
             if event.type == pygame.MOUSEMOTION and self.visible:
@@ -82,11 +83,7 @@ class Button(Entity):
                 if self._mouse_down_inside and self.rect.collidepoint(event.pos):
                     consumed = True
                     if self.callback:
-                        try:
-                            self.callback(self)
-                        except Exception:
-                            # swallow exceptions; callers should handle logging if desired
-                            pass
+                        self.callback()
                 self._mouse_down_inside = False
                 return consumed
 

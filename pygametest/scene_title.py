@@ -28,12 +28,16 @@ class SceneTitle(scene_base.Scene):
 
         self.entities.append(
             Button(
-            100, 100,
+            1920/2-get_resource("title/play.png").get_width()/2, 700,
+            get_resource("title/play.png"),
             "",
-            image=get_resource("title/play.png"),
-            callback=lambda: (music.fadeout(200), setattr(self.manager, "next_scene", SceneGameplay(self.manager)))
+            callback=lambda: self.on_play()
             )
         )
+
+    def on_play(self):
+        music.fadeout(200)
+        self.manager.next_scene = SceneGameplay(self.manager)
 
     def exit(self):
         music.fadeout(1000)
@@ -45,6 +49,7 @@ class SceneTitle(scene_base.Scene):
         super().resume()
 
     def handle_event(self, event: pygame.event.Event):
+        super().handle_event(event)
         if event.type == pygame.KEYDOWN:
             if event.key in (pygame.K_RETURN, pygame.K_KP_ENTER, pygame.K_SPACE):
                 # stop/fade title music
@@ -65,3 +70,4 @@ class SceneTitle(scene_base.Scene):
         sw, sh = surface.get_size()
         iw, ih = self.main_image.get_size()
         surface.blit(self.main_image, ((sw - iw) // 2, (sh - ih) // 2 - 180 + math.sin(self.time) * 20))
+        super().render(surface)
