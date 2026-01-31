@@ -19,7 +19,7 @@ class SceneGameplay(scene_base.Scene):
         self.player_speed = 300 
 
     def enter(self, *args, **kwargs):
-        self.test_bg = get_resource("parallax_mountain_pack/layers/parallax-mountain-bg.png")
+        #self.test_bg = get_resource("parallax_mountain_pack/layers/parallax-mountain-bg.png")
         music.play("bgm.ogg")
         music.set_bgm_volume(BGM_VOL)
 
@@ -33,8 +33,9 @@ class SceneGameplay(scene_base.Scene):
         super().resume()
 
     def handle_event(self, event: pygame.event.Event):
-        if self.player:
-            self.player.handle_event(event)
+        #f self.player:
+        #    self.player.handle_event(event)
+        pass
 
     def update(self, dt: float):
         if self.paused:
@@ -57,13 +58,13 @@ class SceneGameplay(scene_base.Scene):
             dx /= diag
             dy /= diag
 
-        self.player.x += int(dx * self.speed * dt)
-        self.player.y += int(dy * self.speed * dt)
+        self.player.x += int(dx * self.player_speed * dt)
+        self.player.y += int(dy * self.player_speed * dt)
 
         # clamp to window
         self.player.clamp_ip(pygame.Rect(0, 0, self.manager.width, self.manager.height))
 
     def render(self, surface: pygame.Surface):
         surface.fill(self.bg_color)
-        surface.blit(self.test_bg, (0, 0))
+        #surface.blit(self.test_bg, (0, 0))
         pygame.draw.rect(surface, self.player_color, self.player)

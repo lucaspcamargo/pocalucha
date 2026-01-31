@@ -40,13 +40,8 @@ class Scene(abc.ABC):
 
     @abc.abstractmethod
     def update(self, dt: float) -> None:
-        """
-        Advance scene logic. Must be implemented by subclasses.
-
-        Args:
-            dt: time delta in seconds since last update call.
-        """
-        raise NotImplementedError
+        # TODO update entities
+        pass
 
     def handle_event(self, event: Any) -> None:
         """

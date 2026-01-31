@@ -1,0 +1,6 @@
+**/__pycache__/
+pygametest/__pycache__
+.vscode
+venv
+*.py[cod]
+*$py.class
