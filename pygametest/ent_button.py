@@ -16,12 +16,12 @@ class Button(Entity):
 
     def __init__(
         self,
-        rect: pygame.Rect,
+        x: int,
+        y: int,
+        image: Optional[pygame.Surface] = None,
         text: str = "",
         callback: Optional[Callable[["Button"], None]] = None,
         font: Optional[pygame.font.Font] = None,
-        colors: Optional[dict] = None,
-        border_radius: int = 6,
         enabled: bool = True,
         visible: bool = True,
     ):
@@ -33,30 +33,17 @@ class Button(Entity):
             # keep Button lightweight and self-contained.
             pass
 
-        if not isinstance(rect, pygame.Rect):
-            rect = pygame.Rect(rect)
+        self.image = image
 
-        self.rect = rect
+        self.rect = pygame.Rect(x, y, 200, 50)
+        if self.image:
+            self.rect = pygame.Rect(x, y, self.image.get_width(), self.image.get_height())
         self.text = text
         self.callback = callback
 
         pygame.font.init()
         self.font = font or pygame.font.SysFont(None, 20)
 
-        # color scheme: normal, hover, pressed, disabled, text
-        default_colors = {
-            "bg": (200, 200, 200),
-            "hover": (170, 170, 170),
-            "pressed": (140, 140, 140),
-            "disabled": (120, 120, 120),
-            "border": (60, 60, 60),
-            "text": (10, 10, 10),
-        }
-        if colors:
-            default_colors.update(colors)
-        self.colors = default_colors
-
-        self.border_radius = border_radius
         self.enabled = enabled
         self.visible = visible
 
@@ -112,21 +99,11 @@ class Button(Entity):
         if not self.visible:
             return
 
-        # choose background color based on state
-        if not self.enabled:
-            bg = self.colors["disabled"]
-        elif self.pressed:
-            bg = self.colors["pressed"]
-        elif self.hover:
-            bg = self.colors["hover"]
-        else:
-            bg = self.colors["bg"]
-
-        pygame.draw.rect(surface, bg, self.rect, border_radius=self.border_radius)
-        pygame.draw.rect(surface, self.colors["border"], self.rect, width=1, border_radius=self.border_radius)
+        if self.image:
+            surface.blit(self.image, self.rect)
 
         if self.text:
-            text_surf = self.font.render(self.text, True, self.colors["text"])
+            text_surf = self.font.render(self.text, True, (10, 10, 10))
             text_rect = text_surf.get_rect(center=self.rect.center)
             surface.blit(text_surf, text_rect)
 

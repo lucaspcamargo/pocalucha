@@ -26,6 +26,15 @@ class SceneTitle(scene_base.Scene):
         music.play("bgm.ogg")
         music.set_bgm_volume(BGM_VOL)
 
+        self.entities.append(
+            Button(
+            100, 100,
+            "",
+            image=get_resource("title/play.png"),
+            callback=lambda: (music.fadeout(200), setattr(self.manager, "next_scene", SceneGameplay(self.manager)))
+            )
+        )
+
     def exit(self):
         music.fadeout(1000)
 
