@@ -91,37 +91,23 @@ class LittleGuy(AnimatedSprite):
         self.input_map = self.INPUT_MAP[1] if p2 else self.INPUT_MAP[0]
         self.input_states = {key: False for key in self.input_map.keys()}
 
-        # spatial
-        self.pos = pygame.math.Vector2(pos)
-        self.vel = pygame.math.Vector2(0, 0)
-        self.size = pygame.Rect(0, 0, LittleGuy.DIM_X, LittleGuy.DIM_Y)
-        self.rect = pygame.Rect(self.pos.x, self.pos.y, self.size.width, self.size.height)
-        offset_naive = self.calc_offset_center()
-        self.offset = offset_naive - pygame.math.Vector2(0, 50)
-
-        # appearance (simple generated sprites so no assets required)
-        self.palette = [(60, 120, 200), (200, 60, 90), (80, 200, 120), (200, 160, 60)]
-        self.color = self.palette[self.char_id % len(self.palette)]
+        # restoration state
+        self.start_pos = pos
         self.orig_frame_time = self.frame_time
 
-        # state machine
+        # state machine init
         self.state = self.STATE_IDLE
         self.facing = -1 if self.p2 else 1  # 1 = right, -1 = left
         self.state_timer = 0.0
 
-        # gameplay
-        self.health = 100
-        self.stamina = 20
-        self.stamina_timer = 0.0
-        self.stamina_period = 0.5
-        self.invulnerable_timer = 0.0
-        self.knockback_x = 0.0
+        self.reset()
 
         # configuration
         self.walk_speed = 140.0
         self.attack_duration = 0.35
         self.hit_recovery = 0.5
 
+        # hitbox and damage props
         self.hitbox: pygame.Rect = None
         self.hit_damage: int = 0
         self.blocking = False
@@ -334,3 +320,20 @@ class LittleGuy(AnimatedSprite):
             pygame.draw.rect(surface, pygame.Color("red" if not self.blocking else "blue"), self.rect.move(cam_offset), 2)
             if self.hitbox:
                 pygame.draw.rect(surface, pygame.Color("green"), self.hitbox.move(cam_offset), 2)
+
+    def reset(self):
+        self.change_state(self.STATE_IDLE)
+        self.pos = pygame.math.Vector2(self.start_pos)
+        self.vel = pygame.math.Vector2(0, 0)
+        self.size = pygame.Rect(0, 0, LittleGuy.DIM_X, LittleGuy.DIM_Y)
+        self.rect = pygame.Rect(self.pos.x, self.pos.y, self.size.width, self.size.height)
+        offset_naive = self.calc_offset_center()
+        self.offset = offset_naive - pygame.math.Vector2(0, 50)
+
+        # gameplay
+        self.health = 100
+        self.stamina = 20
+        self.stamina_timer = 0.0
+        self.stamina_period = 0.5
+        self.invulnerable_timer = 0.0
+        self.knockback_x = 0.0

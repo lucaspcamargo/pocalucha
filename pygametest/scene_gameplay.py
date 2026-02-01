@@ -117,6 +117,13 @@ class SceneGameplay(scene_base.Scene):
             self.ent_p1.set_inv_flip(self.inv_flip)
             self.ent_p2.set_inv_flip(self.inv_flip)
 
+        # check if turn must end
+        if self.ent_p1.state == self.ent_p1.STATE_DEAD or self.ent_p2.state == self.ent_p2.STATE_DEAD:
+            p1_died = self.ent_p1.state == self.ent_p1.STATE_DEAD
+            dead_time = self.ent_p1.state_timer if p1_died else self.ent_p2.state_timer
+            if dead_time > 4.0:
+                self.reset_round(p1_died)
+
         if DBG_GAMEPLAY:
             # move camera with arrow keys
             keys = pygame.key.get_pressed()
@@ -138,6 +145,22 @@ class SceneGameplay(scene_base.Scene):
             self.cam_pos.x = -339
         if self.cam_pos.x > 339:
             self.cam_pos.x = 339
+
+    def reset_round(self, p1_died: bool):
+        if p1_died:
+            self.p1_lives -= 1
+        else:
+            self.p2_lives -= 1
+
+        if self.p1_lives <= 0 or self.p2_lives <= 0:
+            self.end_game(p1_died)
+
+        self.ent_p1.reset()
+        self.ent_p2.reset()
+
+    def end_game(self, p1_died: bool):
+        from .scene_title import SceneTitle
+        self.manager.next_scene = SceneTitle(self.manager)
 
     def render(self, surface: pygame.Surface):
         surface.fill(self.bg_color)
