@@ -40,8 +40,13 @@ class Scene(abc.ABC):
 
     @abc.abstractmethod
     def update(self, dt: float) -> None:
-        # TODO update entities
-        pass
+        for ent in self.entities:
+            if ent is None:
+                continue
+            # prefer custom update(dt)
+            update_fn = getattr(ent, "update", None)
+            if callable(update_fn):
+                update_fn(dt)
 
     def handle_event(self, event: Any) -> None:
         for ent in self.entities:
@@ -50,10 +55,7 @@ class Scene(abc.ABC):
             # prefer custom handle_event(event)
             handle_fn = getattr(ent, "handle_event", None)
             if callable(handle_fn):
-                try:
-                    handle_fn(event)
-                except Exception:
-                    continue
+                handle_fn(event)
 
     def render(self, surface: Any) -> None:
         """Render entities. Entities may implement render(surface), draw(surface), or have image/rect."""
@@ -78,15 +80,9 @@ class Scene(abc.ABC):
             else:
                 draw_fn = getattr(ent, "draw", None)
                 if callable(draw_fn):
-                    try:
-                        draw_fn(surface)
-                    except Exception:
-                        continue
+                    draw_fn(surface)
                 elif hasattr(ent, "image") and hasattr(ent, "rect"):
-                    try:
-                        surface.blit(ent.image, ent.rect)
-                    except Exception:
-                        continue
+                    surface.blit(ent.image, ent.rect)
 
     def pause(self) -> None:
         """Pause the scene's updates (update should typically early-return when paused)."""

@@ -17,6 +17,7 @@ class Entity(pygame.sprite.Sprite):
         pos: Tuple[float, float] = (0, 0),
         image: Optional[pygame.Surface] = None,
         size: Tuple[int, int] = (32, 32),
+        group: pygame.sprite.AbstractGroup = None
     ):
         super().__init__()
         self.pos = pygame.math.Vector2(pos)      # precise position (floats)
@@ -35,6 +36,9 @@ class Entity(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=self.pos)
 
         self.alive_flag = True
+
+        if group is not None:
+            group.add(self)
 
     def update(self, dt: float):
         """
