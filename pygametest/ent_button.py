@@ -20,7 +20,7 @@ class Button(Entity):
         y: int,
         image: Optional[pygame.Surface] = None,
         text: str = "",
-        callback: Optional[Callable[["Button"], None]] = None,
+        callback: Optional[Callable] = None,
         font: Optional[pygame.font.Font] = None,
         enabled: bool = True,
         visible: bool = True,
