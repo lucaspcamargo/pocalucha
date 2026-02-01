@@ -44,11 +44,19 @@ class SceneGameplay(scene_base.Scene):
         self.lower_bg.parallax = 0.5
         self.entities.append(self.lower_bg)
 
-        self.middle_bg = Entity((-255, 0), get_resource("bgs/new1.png"), group=self.bg_group)
+        #self.middle_bg = Entity((-255, 0), get_resource("bgs/new1.png"), group=self.bg_group)
+        #self.middle_bg.parallax = 0.63
+        #self.entities.append(self.middle_bg)
+
+        self.crowd_imgs = [get_resource(f"bgs/crowd/{i}.png") for i in range(3)]
+        self.crowd_timer = 0.0
+
+        self.middle_bg = Entity((-275, 376), self.crowd_imgs[0], group=self.bg_group)
         self.middle_bg.parallax = 0.63
         self.entities.append(self.middle_bg)
 
-        self.main_bg = Entity((-275, 376), get_resource("bgs/new2.png"), group=self.bg_group)
+
+        self.main_bg = Entity((-275, 376), get_resource("bgs/ring.png"), group=self.bg_group)
         self.main_bg.parallax = 0.8
         self.entities.append(self.main_bg)
 
@@ -90,6 +98,10 @@ class SceneGameplay(scene_base.Scene):
             return
         
         super().update(dt)
+
+        self.crowd_timer += dt
+        crowd_seq = [0, 1, 2, 1]
+        self.middle_bg.image = self.crowd_imgs[crowd_seq[int((self.crowd_timer*3 ) % 4)]]
 
         if self.ent_p1.hitbox is not None:
             if self.ent_p1.hitbox.colliderect(self.ent_p2.rect):

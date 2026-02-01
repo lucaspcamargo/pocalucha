@@ -26,14 +26,14 @@ class Scene(abc.ABC):
         self.cam_max = pygame.math.Vector2(0, 0)
         self.cam_pos = pygame.math.Vector2(0, 0)
 
-    def init(self) -> None:
+    def enter(self) -> None:
         """
         Called when the scene is started/activated.
         Override to allocate resources, start music, spawn entities, etc.
         """
         self.active = True
 
-    def teardown(self) -> None:
+    def exit(self) -> None:
         """
         Called when the scene is stopped/removed.
         Override to free resources, stop sounds, cancel timers, etc.

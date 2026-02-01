@@ -3,6 +3,7 @@ import sys
 import pygame
 
 from pygametest.scene_title import SceneTitle
+from pygametest.scene_victory import SceneVictory
 
 from .resload import load_resources_init, load_resource
 
@@ -13,7 +14,7 @@ WIDTH, HEIGHT = 1920, 1080
 TITLE = "Poca Lucha"
 RES_DIR = "./res/"
 FULLSCREEN = (sys.argv.count("--fullscreen") + sys.argv.count("-f")> 0)
-
+SHOW_FPS = "--debug" in sys.argv or "--fps" in sys.argv
 
 class Game:
     def __init__(self, width: int = WIDTH, height: int = HEIGHT):
@@ -34,6 +35,8 @@ class Game:
         self.scene = None
         if("-g" in sys.argv):
             self.next_scene = SceneGameplay(self)
+        elif("-v" in sys.argv):
+            self.next_scene = SceneVictory(0, self)
         else:
             self.next_scene = SceneTitle(self)
 
@@ -88,10 +91,10 @@ class Game:
         self.scene.update(dt) if self.scene else None
 
     def draw(self):
-        # FPS counter
-        fps_text = self.dbg_font.render(f"FPS: {self.clock.get_fps():.1f}", False, pygame.Color("green"), pygame.Color("black"))
-        rect = fps_text.get_rect()
-        sw, sh = self.screen.get_size()
-        self.screen.blit(fps_text, (40, sh - rect.height - 40))  # fixed x pos for FPS display
+        if SHOW_FPS:
+            fps_text = self.dbg_font.render(f"FPS: {self.clock.get_fps():.1f}", False, pygame.Color("green"), pygame.Color("black"))
+            rect = fps_text.get_rect()
+            sw, sh = self.screen.get_size()
+            self.screen.blit(fps_text, (40, sh - rect.height - 40))  # fixed x pos for FPS display
 
         pygame.display.flip()
