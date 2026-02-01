@@ -53,7 +53,7 @@ class Button(Entity):
         self._mouse_down_inside = False
 
     def update(self, dt: float = 0):
-        self.time += dt
+        pass
 
     def handle_event(self, event: pygame.event.Event) -> bool:
         """
