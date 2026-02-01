@@ -77,8 +77,8 @@ class LittleGuy(AnimatedSprite):
     STATE_DEAD = "dead"
 
     INPUT_MAP = [
-        {"left": pygame.K_a, "right": pygame.K_d, "punch": pygame.K_w, "kick": pygame.K_e, "block": pygame.K_q},  # Player 1
-        {"left": pygame.K_j, "right": pygame.K_l, "punch": pygame.K_i, "kick": pygame.K_o, "block": pygame.K_u},  # Player 2
+        {"left": pygame.K_a, "right": pygame.K_d, "punch": pygame.K_r, "kick": pygame.K_t, "block": pygame.K_y},  # Player 1
+        {"left": pygame.K_LEFT, "right": pygame.K_RIGHT, "punch": pygame.K_KP1, "kick": pygame.K_KP2, "block": pygame.K_KP3},  # Player 2
     ]
 
 

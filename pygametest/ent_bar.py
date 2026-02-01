@@ -23,6 +23,7 @@ class Bar(Entity):
         self.rect = pygame.Rect(pos, size)
         self.image = pygame.Surface(self.rect.size)
         self.scroll = False
+        self.ltr = ltr
 
     def set_value(self, value: float):
         """Set the current value of the bar."""
@@ -37,4 +38,4 @@ class Bar(Entity):
         # Create a new surface for the bar
         self.image.fill(self.bg_color)
         if fill_width > 0:
-            pygame.draw.rect(self.image, self.color, (0, 0, fill_width, self.rect.height))
+            pygame.draw.rect(self.image, self.color, (self.rect.width - fill_width, 0, fill_width, self.rect.height) if self.ltr else (0, 0, fill_width, self.rect.height))

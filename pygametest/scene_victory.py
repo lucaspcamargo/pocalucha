@@ -43,3 +43,6 @@ class SceneVictory(scene_base.Scene):
     def on_quit(self):
         from .scene_title import SceneTitle
         self.manager.next_scene = SceneTitle(self.manager)
+
+    def render(self, surface):
+        return super().render(surface)

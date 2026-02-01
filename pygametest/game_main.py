@@ -59,6 +59,25 @@ class Game:
             self.update(dt)
             self.draw()
 
+    async def run_async(self):
+        import asyncio
+        while self.running:
+            dt = self.clock.tick() / 1000.0  # delta time in seconds
+            await asyncio.sleep(0)
+            if self.next_scene:
+                if self.scene:
+                    self.scene.exit()
+                self.scene = self.next_scene
+                self.scene.enter()
+                self.next_scene = None
+            if self.scene:
+                self.scene.update(dt)
+                self.scene.render(self.screen)
+
+            self.handle_events()
+            self.update(dt)
+            self.draw()
+
     def resource_load(self):
         load_color = pygame.Color("yellow")
         load_bg_color = pygame.Color("#222222")

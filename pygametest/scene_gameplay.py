@@ -51,12 +51,12 @@ class SceneGameplay(scene_base.Scene):
         self.crowd_imgs = [get_resource(f"bgs/crowd/{i}.png") for i in range(3)]
         self.crowd_timer = 0.0
 
-        self.middle_bg = Entity((-275, 376), self.crowd_imgs[0], group=self.bg_group)
+        self.middle_bg = Entity((-275, 150), self.crowd_imgs[0], group=self.bg_group)
         self.middle_bg.parallax = 0.63
         self.entities.append(self.middle_bg)
 
 
-        self.main_bg = Entity((-275, 376), get_resource("bgs/ring.png"), group=self.bg_group)
+        self.main_bg = Entity((-275, 1080-500), get_resource("bgs/ring.png"), group=self.bg_group)
         self.main_bg.parallax = 0.8
         self.entities.append(self.main_bg)
 
