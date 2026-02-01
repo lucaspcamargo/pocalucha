@@ -25,7 +25,7 @@ class SceneTitle(scene_base.Scene):
     def enter(self, *args, **kwargs):
         self.bg_image = get_resource("title/bg.png")
         self.main_image = get_resource("title/main.png")
-        music.play("bgm.ogg")
+        music.play("bgm/menu_prev.mp3")
         music.set_bgm_volume(BGM_VOL)
         self.entities.append(
             Button(
@@ -57,19 +57,17 @@ class SceneTitle(scene_base.Scene):
         )
 
     def on_play(self):
-        music.fadeout(200)
+        music.stop()
         self.manager.next_scene = SceneGameplay(self.manager)
 
     def on_options(self):
-        music.fadeout(200)
         self.manager.next_scene = SceneOptions(self.manager)
 
     def on_credits(self):
-        music.fadeout(200)
         self.manager.next_scene = SceneCredits(self.manager)
 
     def exit(self):
-        music.fadeout(1000)
+        pass
 
     def pause(self):
         super().pause()

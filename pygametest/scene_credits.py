@@ -21,8 +21,6 @@ class SceneCredits(scene_base.Scene):
 
     def enter(self, *args, **kwargs):
         self.bg_image = get_resource("title/pocalucha.png")
-        music.play("bgm.ogg")
-        music.set_bgm_volume(BGM_VOL)  
 
         self.entities.append(
             Button(
@@ -40,7 +38,7 @@ class SceneCredits(scene_base.Scene):
         self.manager.next_scene = SceneTitle(self.manager)
 
     def exit(self):
-        music.fadeout(1000)
+        pass
 
     def pause(self):
         super().pause()

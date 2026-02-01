@@ -23,6 +23,8 @@ class Entity(pygame.sprite.Sprite):
         self.pos = pygame.math.Vector2(pos)      # precise position (floats)
         self.vel = pygame.math.Vector2(0, 0)     # velocity (pixels/sec)
         self.acc = pygame.math.Vector2(0, 0)     # acceleration (pixels/sec^2)
+        self.scroll = True                       # whether affected by camera scroll, false for hud stuff or static bg
+        self.parallax = 1.0                      # parallax factor (1.0 = no parallax)
 
         self.angle = 0.0                         # degrees
         self.angular_velocity = 0.0              # degrees/sec
@@ -39,6 +41,14 @@ class Entity(pygame.sprite.Sprite):
 
         if group is not None:
             group.add(self)
+
+    def calc_cam_offset(self, cam_pos: pygame.math.Vector2) -> pygame.math.Vector2:
+        """Calculate the camera offset for this entity."""
+        m_cam_pos = -cam_pos
+        return pygame.math.Vector2(m_cam_pos.x * self.parallax, m_cam_pos.y * self.parallax) if self.scroll else pygame.math.Vector2(0, 0)
+
+    def handle_event(self, event: pygame.event.Event):
+        pass
 
     def update(self, dt: float):
         """
@@ -59,9 +69,10 @@ class Entity(pygame.sprite.Sprite):
             self.image = self._orig_image
             self.rect.topleft = (int(self.pos.x), int(self.pos.y))
 
-    def draw(self, surface: pygame.Surface):
+    def draw(self, surface: pygame.Surface, cam_pos: pygame.math.Vector2):
         """Blit the entity to the given surface."""
-        surface.blit(self.image, self.rect)
+        cam_off = self.calc_cam_offset(cam_pos)
+        surface.blit(self.image, self.rect.move(cam_off.x, cam_off.y))
 
     # convenience helpers
     def apply_impulse(self, impulse: Tuple[float, float]):

@@ -25,8 +25,6 @@ class SceneOptions(scene_base.Scene):
     def enter(self, *args, **kwargs):
         self.bg_image = get_resource("title/bg.png")
         self.main_image = get_resource("title/main.png")
-        music.play("bgm.ogg")
-        music.set_bgm_volume(BGM_VOL)  
 
         self.entities.append(
             Button(
@@ -52,21 +50,19 @@ class SceneOptions(scene_base.Scene):
         )
 
     def on_title(self):
-        music.fadeout(200)
         from pygametest.scene_title import SceneTitle
         self.manager.next_scene = SceneTitle(self.manager)
 
     def on_play(self):
-        music.fadeout(200)
         self.manager.next_scene = SceneGameplay(self.manager)
 
     def on_mute(self):
-        music.fadeout(1000)
-        self.botaoMute.image.load("nosound.png") 
+        ##self.botaoMute.image.load("nosound.png") 
+        pass
         
 
     def exit(self):
-        music.fadeout(1000)
+        pass
 
     def pause(self):
         super().pause()

@@ -89,7 +89,7 @@ class Button(Entity):
 
         return False
 
-    def draw(self, surface: pygame.Surface):
+    def draw(self, surface: pygame.Surface, _cam_pos):
         """
         Draw the button onto the provided surface.
         """

@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import Any, Dict, Optional
 import abc
+import pygame
 
 class Scene(abc.ABC):
     """
@@ -21,6 +22,9 @@ class Scene(abc.ABC):
         self.width = manager.width
         self.height = manager.height
         self.entities = []
+        self.cam_min = pygame.math.Vector2(0, 0)
+        self.cam_max = pygame.math.Vector2(0, 0)
+        self.cam_pos = pygame.math.Vector2(0, 0)
 
     def init(self) -> None:
         """
@@ -64,25 +68,12 @@ class Scene(abc.ABC):
         for ent in entities:
             if ent is None:
                 continue
-            # prefer custom render(surface)
-            render_fn = getattr(ent, "render", None)
-            if callable(render_fn):
-                try:
-                    render_fn(surface)
-                except TypeError:
-                    # some renderers may not accept surface
-                    try:
-                        render_fn()
-                    except Exception:
-                        continue
-                except Exception:
-                    continue
-            else:
-                draw_fn = getattr(ent, "draw", None)
-                if callable(draw_fn):
-                    draw_fn(surface)
-                elif hasattr(ent, "image") and hasattr(ent, "rect"):
-                    surface.blit(ent.image, ent.rect)
+            # prefer custom draw(surface, cam_pos)
+            draw_fn = getattr(ent, "draw", None)
+            if callable(draw_fn):
+                draw_fn(surface, self.cam_pos)
+            elif hasattr(ent, "image") and hasattr(ent, "rect"):
+                surface.blit(ent.image, ent.rect)
 
     def pause(self) -> None:
         """Pause the scene's updates (update should typically early-return when paused)."""
